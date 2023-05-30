@@ -1,0 +1,344 @@
+using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
+public abstract class Item
+{
+    public string Name { get; set; }
+    public int MinDamage { get; set; }
+    public int MaxDamage { get; set; }
+    public int RequiredSkill { get; set; }
+
+    public abstract int Use(int skill);
+
+    public override string ToString()
+    {
+        return Name;
+    }
+}
+
+public class WaterBottle : Item
+{
+    public WaterBottle()
+    {
+        Name = "Woda";
+        MinDamage = 0;
+        MaxDamage = 10;
+        RequiredSkill = 0;
+    }
+
+    public override int Use(int skill)
+    {
+        Random random = new Random();
+        if (skill < RequiredSkill)
+        {
+            Console.WriteLine("Niski skill! Wybierz coś innego.");
+            return 0;
+        }
+        return random.Next(MinDamage, MaxDamage + 1);
+    }
+}
+
+public class GolfClub : Item
+{
+    public GolfClub()
+    {
+        Name = "Kij golfowy";
+        MinDamage = 10;
+        MaxDamage = 15;
+        RequiredSkill = 5;
+    }
+
+
+        public override int Use(int skill)
+    {
+        Random random = new Random();
+        if (skill < RequiredSkill)
+        {
+            Console.WriteLine("Niski skill! Wybierz coś innego.");
+            return 0;
+        }
+        return random.Next(MinDamage, MaxDamage + 1);
+    }
+}
+public class Hammer : Item
+{
+    public Hammer()
+    {
+        Name = "Młotek";
+        MinDamage = 15;
+        MaxDamage = 20;
+        RequiredSkill = 10;
+    }
+
+    public override int Use(int skill)
+    {
+        Random random = new Random();
+        if (skill < RequiredSkill)
+        {
+            Console.WriteLine("Niski skill! Wybierz coś innego.");
+            return 0;
+        }
+        return random.Next(MinDamage, MaxDamage + 1);
+    }
+}
+
+public class Baton : Item
+{
+    public Baton()
+    {
+        Name = "Baton";
+        MinDamage = 20;
+        MaxDamage = 25;
+        RequiredSkill = 15;
+    }
+
+    public override int Use(int skill)
+    {
+        Random random = new Random();
+        if (skill < RequiredSkill)
+        {
+            Console.WriteLine("Niski skill! Wybierz coś innego.");
+            return 0;
+        }
+        return random.Next(MinDamage, MaxDamage + 1);
+    }
+}
+
+public class Machete : Item
+{
+    public Machete()
+    {
+        Name = "Maczeta";
+        MinDamage = 25;
+        MaxDamage = 30;
+        RequiredSkill = 20;
+    }
+
+    public override int Use(int skill)
+    {
+        Random random = new Random();
+        if (skill < RequiredSkill)
+        {
+            Console.WriteLine("Niski skill! Wybierz coś innego.");
+            return 0;
+        }
+        return random.Next(MinDamage, MaxDamage + 1);
+    }
+}
+
+public class Crowbar : Item
+{
+    public Crowbar()
+    {
+        Name = "Łom";
+        MinDamage = 30;
+        MaxDamage = 35;
+        RequiredSkill = 25;
+    }
+
+    public override int Use(int skill)
+    {
+        Random random = new Random();
+        if (skill < RequiredSkill)
+        {
+            Console.WriteLine("Niski skill! Wybierz coś innego.");
+            return 0;
+        }
+        return random.Next(MinDamage, MaxDamage + 1);
+    }
+}
+
+
+public abstract class Hack
+{
+    public string Name { get; set; }
+    public int Hp { get; set; }
+    public int Damage { get; set; }
+
+    public override string ToString()
+    {
+        return Name;
+    }
+}
+
+public class Power : Hack
+{
+    public Power()
+    {
+        Name = "zmierdzący siombie";
+        Hp = 50;
+        Damage = 20;
+    }
+}
+
+public class Safe : Hack
+{
+    public Safe()
+    {
+        Name = "ślepy zombie";
+        Hp = 40;
+        Damage = 15;
+    }
+}
+
+public class Password : Hack
+{
+    public Password()
+    {
+        Name = "Pustak";
+        Hp = 30;
+        Damage = 10;
+    }
+}
+
+public class DoorG : Hack
+{
+    public DoorG()
+    {
+        Name = "plujący zombie";
+        Hp = 60;
+        Damage = 25;
+    }
+}
+
+public class DoorS : Hack
+{
+    public DoorS()
+    {
+        Name = "Ogromny zombie";
+        Hp = 70;
+        Damage = 30;
+    }
+}
+
+public class SafeG : Hack
+{
+    public SafeG()
+    {
+        Name = "mały zombie";
+        Hp = 15;
+        Damage = 10;
+    }
+}
+
+public class SafeM : Hack
+{
+    public SafeM()
+    {
+        Name = "średni zombie";
+        Hp = 60;
+        Damage = 25;
+    }
+}
+
+public class SafeD : Hack
+{
+    public SafeD()
+    {
+        Name = "szybki zombie";
+        Hp = 30;
+        Damage = 30;
+    }
+}
+
+public static class Program
+{
+    private static List<Item> items;
+    private static int life;
+    private static int skill;
+    private static int hacksCompleted;
+
+    private static void ChooseItem()
+    {
+        Console.WriteLine("Wybierz przedmiot:");
+        for (int i = 0; i < items.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}) {items[i]} {items[i].RequiredSkill}");
+        }
+    }
+
+    private static void Main()
+    {
+        Console.WriteLine("Podaj swój nick: ");
+        string nick = Console.ReadLine();
+        life = 300;
+        skill = 200;
+        items = new List<Item> { new WaterBottle(), new GolfClub(), new Hammer(), new Baton(), new Machete(), new Crowbar()};
+        hacksCompleted = 0;
+
+        while (life > 0)
+        {
+            Hack hack = GetRandomHack();
+            Console.WriteLine("====================");
+
+            while (hack.Hp > 0)
+            {
+                Console.WriteLine($"{nick} atakuje {hack.Name}");
+                Console.WriteLine("====================");
+                Console.WriteLine($"{hack.Name} ma {hack.Hp} Hp");
+                Console.WriteLine("====================");
+                Console.WriteLine($"Ten przeciwnik zadaje Ci {hack.Damage} Hp");
+                Console.WriteLine("====================");
+                life -= hack.Damage;
+                if (life < 0)
+                {
+                    break;
+                }
+                Console.WriteLine($"Zostało ci: {life} hp");
+                Console.WriteLine("====================");
+                Console.WriteLine($"Twój poziom wynosi: {skill}");
+                Console.WriteLine("====================");
+                ChooseItem();
+                int input = -1;
+                bool validInput = false;
+                while (!validInput)
+                {
+                    if (!int.TryParse(Console.ReadLine(), out input))
+                    {
+                        Console.WriteLine("Nieprawidłowe wejście. Spróbuj jeszcze raz.");
+                        continue;
+                    }
+                    validInput = true;
+                }
+                if (input < 1 || input > items.Count)
+                {
+                    Console.WriteLine("Nieprawidłowy wybór. Spróbuj jeszcze raz.");
+                    continue;
+                }
+                Item item = items[input - 1];
+                int attack = item.Use(skill);
+                hack.Hp -= attack;
+                Console.WriteLine($"Zadałeś {attack} obrażeń");
+                Console.WriteLine("========================");
+            }
+
+            Console.WriteLine("====================");
+            Console.WriteLine("Pokonałeś tego przeciwnika !!!");
+            hacksCompleted++;
+            Console.WriteLine($"Pokonałeś {hacksCompleted} przeciwników");
+
+            if (life <= 0)
+            {
+                Console.WriteLine("====================");
+                Console.WriteLine($"{hack.Name} zadał ci bardzo dużo obrażeń! Nie żyjesz! PRZEGRAŁEŚ!");
+                Console.WriteLine("%%%%%%%%%%%%%%%%%%%%");
+                Console.WriteLine($"Pokonałeś {hacksCompleted} przeciwników");
+            }
+            else if (hacksCompleted == 8)
+            {
+                Console.WriteLine("Jesteś gotowy");
+                break;
+            }
+        }
+    }
+
+
+    private static Hack GetRandomHack()
+    {
+        Random random = new Random();
+        int index = random.Next(klasy.Length);
+        return (Hack)Activator.CreateInstance(klasy[index]);
+    }
+
+    private static Type[] klasy = { typeof(Power), typeof(Safe), typeof(Password), typeof(DoorG), typeof(DoorS), typeof(SafeG), typeof(SafeM), typeof(SafeD) };
+}
